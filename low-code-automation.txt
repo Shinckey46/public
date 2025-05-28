@@ -1,0 +1,77 @@
+package cz.czechitas.automation;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+/**
+ * Test class for custom student tests
+  * @author Jiri Koudelka
+ * @since 1.0.0
+
+ */
+final class ExampleTest extends TestRunner {
+
+/**
+ * Ilona’s Home Work
+ */
+    int cas = 2;
+    @Test
+    @DisplayName("DU")
+    void du()
+        {
+            int cas = 3;
+        //přidat všude čas
+        browser.loginSection.clickLoginMenuLink();
+            browser.waitFor(cas);
+        browser.loginSection.insertEmail("sfb30@seznam.cz");
+            browser.waitFor(cas);
+        browser.loginSection.insertPassword("Asdfgh1@");
+            browser.waitFor(cas);
+        browser.loginSection.clickLoginButton();
+            browser.waitFor(cas);
+
+        String prijmeni = browser.generateRandomName(8);
+
+        browser.headerMenu.goToApplicationsSection();
+        browser.applicationSection.search(prijmeni);
+        //assertace že přihláška pro dané jméno neexistuje
+        asserter.applicationSection.checkApplicationsTableIsEmpty();
+        browser.applicationSection.clickCreateNewApplicationButton();
+        browser.applicationSection.selectProgrammingSection();
+        browser.applicationSection.clickCreateApplicationButton();
+        browser.applicationDetailsSection.selectTerm("05.02. - 09.02.");
+        browser.applicationDetailsSection.insertStudentFirstName("Pepa");
+        browser.applicationDetailsSection.insertStudentLastName(prijmeni);
+        browser.applicationDetailsSection.insertBirthdate("10.10.2015");
+        browser.applicationDetailsSection.insertNote("Toto je poznámka");
+        browser.applicationDetailsSection.selectCashPaymentMethod();
+        browser.applicationDetailsSection.clickAcceptTermsCheckbox();
+        browser.applicationDetailsSection.clickCreateApplicationButton();
+        //assertace že přihláška pro dané jméno existuje
+            browser.waitFor(5);
+            browser.headerMenu.goToApplicationsSection();
+        browser.applicationSection.search(prijmeni);
+            browser.waitFor(cas);
+
+        asserter.applicationSection.checkNumberOfApplications(1);
+        browser.waitFor(cas);
+        browser.applicationSection.clickEditFirstApplicationButton();
+        browser.waitFor(cas);
+        browser.applicationDetailsSection.selectBankTransferPaymentMethod();
+        browser.waitFor(cas);
+        browser.applicationDetailsSection.clickEditApplicationButton();
+
+
+        browser.applicationSection.search(prijmeni);
+        browser.waitFor(cas);
+        browser.applicationSection.openFirstApplicationDetailsPage();
+        browser.waitFor(cas);
+        asserter.applicationDetailAction.checkPaymentMethod("Bankovní převod");
+      
+
+        }
+
+}

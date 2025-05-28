@@ -1,0 +1,36 @@
+describe('common user flow', () => {
+    it('works for happy path', () => {
+    
+      cy.visit('https://apify.com/store');
+
+      //Consent to Cookies Confirmation.
+      cy.get('#onetrust-accept-btn-handler').click();
+
+      //Search an actor through the search field.
+      cy.log('Search for an Actor on the web');
+      cy.get('[data-test="searchInput"]').clear('');
+      cy.get('[data-test="searchInput"]').type('cheerio scraper');
+      
+      cy.log('Select an Actor'); 
+      cy.get('#data-tracking-actor-card-cheerio-scraper-1-store-web > .ActorStoreItem-header > .ActorStoreItem-title-wrapper > .sc-c1ef0b05-0').click();
+      
+      //Open a program in the Apify Console using the "Try for free" button.
+      cy.log('Open an Actor in Apify Console'); 
+      cy.get('.sc-da1dc26a-0 > .sc-da1dc26a-1 > [data-test="tryForFreeButton"] > .sc-a44598a3-0').click();
+
+      //Program requires login; credentials were deleted as per the instructions. For automation testing, please replace them with your own.
+      cy.log('Login to Apify Console');
+      cy.get('#navBetweenSign').click();
+      cy.get('#email').clear('');
+      cy.get('#email').type('***@***.cz');
+      cy.get('#password').clear();
+      cy.get('#password').type('***');
+      cy.get('#data-tracking-sign-in-direct').click();
+      
+      //Run the program.
+      cy.log('Run the program');
+      cy.get('[data-test="actor-run-button"] > .Button-Content').click();
+       
+    });
+  
+  })
