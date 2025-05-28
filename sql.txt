@@ -1,0 +1,100 @@
+SQL dotazy a příkazy
+CVIČENÍ 1 - vytvoření tabulky
+
+ Nadefinujeme si Tabulku “Osoba”, její sloupce a jejich datové typy:
+
+CREATE TABLE Jednorozci (
+    IDosob int,
+   	Prijmeni varchar(255),
+    Jmeno varchar(255),
+    Vek varchar(255),
+    Město varchar(255)
+);
+CVIČENÍ 2 
+1)	Vypiš všechny osoby se všemi informacemi:
+
+SELECT * FROM Osoba;
+
+2)	Vypiš sloupec se všemi příjmeními:
+
+SELECT prijmeni FROM Osoba;
+CVIČENÍ 3 
+1)	Vyber všechny osoby které se jmenují Petra
+
+SELECT * FROM Osoba WHERE Jmeno='Petra';
+
+2)	Vyber všechny osoby, které bydlí v Praze
+
+SELECT * FROM Osoba WHERE Mesto='Praha';
+
+3)	Vyber všechny osoby, které měří 175 cm
+
+SELECT * FROM Osoba WHERE Vyska=175;
+CVIČENÍ 4
+Vyber všechny osoby, jejichž outfit není mezi 9 až 20:
+
+SELECT * FROM Osoba WHERE Id_Outfit not BETWEEN 9 and 20;
+CVIČENÍ 5
+BETWEEN
+Vyber všechny osoby, které nemají vyplněné číslo nebo mají id zvěrokruhu mezi 4 až 10 a zároveň mají v emailu obsažené “av”:
+
+SELECT * FROM Osoba WHERE (Id_Zverokruh BETWEEN 4 AND 10 AND Email like '%av%') OR TelCislo is null;
+
+TOP 
+vyber dvě nejvyšší hodnoty
+
+SELECT TOP 2 * FROM Osoba;
+DISTINCT 
+Vyber unikátní jména:
+
+SELECT DISTINCT Jmeno FROM Osoba; 
+OFFSET 
+Vyber všechny osoby kromě prvních pěti seřazené podle města vzestupně
+
+SELECT * FROM Osoba ORDER BY mesto ASC OFFSET 5
+CVIČENÍ 6 
+Vyber 5 unikátních ID_zverokruhu serazene sestupně bez kromě prvních dvou
+
+SELECT distinct id_zverokruh FROM Osoba ORDER BY id_zverokruh desc LIMIT 5 OFFSET 2
+
+COUNT
+Vrať počet telefonních čísel, jejichž majitel má výšku mezi 170 a 180 cm: 
+
+Select Count (telcislo) FROM Osoba where Vyska BETWEEN 170 and 180; 
+ 
+SUM
+Sečti výšku všech osob, které nejsou z Prahy:
+
+Select SUM (Vyska) FROM Osoba WHERE mesto!='Praha';
+AVG 
+Vypiš průměrný věk všech osob, jejichž outfit je větší než 6 včetně:
+
+Select AVG (Vek) FROM Osoba WHERE id_outfit>=6;
+MAX
+Vypiš nejvyšší věk osoby, která nemá ve jménu města na druhém místě písmeno “e”
+
+Select MAX (Vek) FROM Osoba WHERE Mesto not like '%_e%';
+MIN
+Vypiš nižší věk osoby, která se nejmenuje Pavel ani Lucie
+
+Select MIN (Vek) FROM Osoba WHERE Jmeno not in ('Pavel', 'Lucie');
+JOINY
+Abychom 2 tabulky mohly spojit, musí mezi nimi být nějaká hodnota, která si vzájemně odpovídá (typicky Primární klíč s cizím klíčem)
+
+INNER JOIN
+Select jmeno, prijmeni, id_outfit, SukneID from Osoba INNER JOIN Outfit ON Osoba.ID_outfit=Outfit.ID;
+
+Select jmeno, prijmeni, Nazev from Osoba INNER JOIN Outfit ON Osoba.ID_outfit=Outfit.ID;
+
+LEFT JOIN
+select o.jmeno,o.prijmeni,vk.ISBN,k.nazev 
+from osoba o
+left join VlastnictviKnihy vk ON vk.OsobaID=o.ID
+left join Kniha k ON k.ISBN=vk.ISBN
+where vk.ISBN IS NOT NULL;
+
+
+Je možné použít i:
+RIGHT JOIN
+OUTER JOIN
+FULL OUTER JOIN
